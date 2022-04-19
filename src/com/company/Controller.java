@@ -1,6 +1,6 @@
 package com.company;
 
-public class Contoller {
+public class Controller {
 
   public void run(){
 
