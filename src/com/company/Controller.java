@@ -9,8 +9,10 @@ public class Controller {
 
   private OrderList orderList = new OrderList();
   private OrderHistory orderHistory = new OrderHistory();
-  Scanner sc = new Scanner(System.in);
-  boolean running = true;
+  private PizzaMenu pizzaMenu = new PizzaMenu();
+
+  private Scanner sc = new Scanner(System.in);
+  private boolean running = true;
 
   public void run(){
 
@@ -30,7 +32,6 @@ public class Controller {
   }
 
   public void showMenu() {
-    PizzaMenu pizzaMenu = new PizzaMenu();
     pizzaMenu.createPizzas();
     System.out.println(pizzaMenu.getPizzas());
 
