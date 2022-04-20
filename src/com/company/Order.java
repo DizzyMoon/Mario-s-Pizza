@@ -49,4 +49,8 @@ public class Order {
     public void setStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
+
+    public String toString(){
+        return pizza.toString();
+    }
 }

@@ -30,4 +30,8 @@ public class Pizza {
     public int getPrice() {
         return price;
     }
+
+    public String toString(){
+        return "Number: " + number + ", " + name;
+    }
 }
