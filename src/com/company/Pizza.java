@@ -14,4 +14,20 @@ public class Pizza {
         this.ingredients = ingredients;
         this.price = price;
     }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<String> getIngredients() {
+        return ingredients;
+    }
+
+    public int getPrice() {
+        return price;
+    }
 }
