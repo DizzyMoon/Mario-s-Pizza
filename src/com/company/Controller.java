@@ -30,6 +30,9 @@ public class Controller {
   }
 
   public void showMenu() {
+    PizzaMenu pizzaMenu = new PizzaMenu();
+    pizzaMenu.createPizzas();
+    System.out.println(pizzaMenu.getPizzas());
 
   }
 
