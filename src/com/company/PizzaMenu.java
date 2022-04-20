@@ -50,7 +50,6 @@ public class PizzaMenu {
             pizzas.add(pizza12);
             pizzas.add(pizza13);
             pizzas.add(pizza14);
-
     }
 
     private ArrayList<Pizza> pizzas = new ArrayList<>();
