@@ -8,4 +8,45 @@ public class Order {
     private int hour;
     private int minute;
     private OrderStatus orderStatus;
+
+    public Order(Pizza pizza, String note, int dateOfMonth, int month, int hour, int minute, OrderStatus orderStatus) {
+        this.pizza = pizza;
+        this.note = note;
+        this.dateOfMonth = dateOfMonth;
+        this.month = month;
+        this.hour = hour;
+        this.minute = minute;
+    }
+
+    public Pizza getPizza() {
+        return pizza;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public int getDateOfMonth() {
+        return dateOfMonth;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public OrderStatus getStatus() {
+        return orderStatus;
+    }
+
+    public void setStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 }
