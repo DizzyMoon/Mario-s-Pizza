@@ -6,21 +6,38 @@ import java.util.Scanner;
 public class Controller {
 
   public void run(){
+    Scanner sc = new Scanner(System.in);
+    int input = sc.nextInt();
 
-    boolean running = true;
-
-    while (running) {
-      Scanner sc = new Scanner(System.in);
-      String input = sc.nextLine();
-      switch (input) {
-        case "menu" -> {
-
-        }
-        case "orders" -> {
-
-        }
-      }
+    switch (input) {
+      case 1 -> showMenu();
+      case 2 -> showOrder();
+      case 3 -> showOrderHistory();
+      case 4 -> addOrder();
+      case 5 -> setOrderStatus();
     }
+
+  }
+
+  public void showMenu() {
+
+  }
+
+  public void showOrder() {
+
+  }
+
+  public void showOrderHistory() {
+
+  }
+
+  public void addOrder() {
+
+  }
+
+  public void setOrderStatus() {
+    String spacing = createSpacing("Hawaii pizza");
+    System.out.println("Hawaii Pizza" + spacing);
   }
 
   public String createSpacing(String initiate) {
