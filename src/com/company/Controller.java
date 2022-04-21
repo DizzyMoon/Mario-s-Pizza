@@ -49,6 +49,7 @@ public class Controller {
   }
 
   public void addOrder() {
+    int input = sc.nextInt();
     Pizza pizza1 = new Pizza(1, "Hawaii", new ArrayList<String>(Arrays.asList("Ananas")), 64);
     Order order1 = new Order(pizza1, "Uden brød", 15, 3, 5, 4, OrderStatus.ORDERED);
     orderList.addOrder(order1);
