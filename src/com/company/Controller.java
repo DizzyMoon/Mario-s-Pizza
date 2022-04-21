@@ -15,6 +15,7 @@ public class Controller {
   private boolean running = true;
 
   public void run(){
+    pizzaMenu.createPizzas();
 
     while (running) {
       int input = sc.nextInt();
@@ -32,7 +33,6 @@ public class Controller {
   }
 
   public void showMenu() {
-    pizzaMenu.createPizzas();
     System.out.println(pizzaMenu.getPizzas());
 
   }
