@@ -26,7 +26,8 @@ public class Controller {
         case 3 -> showOrderHistory();
         case 4 -> addOrder();
         case 5 -> setOrderStatus();
-        case 6 -> exit();
+        case 6 -> cancelOrder();
+        case 7 -> exit();
       }
     }
 
@@ -63,6 +64,11 @@ public class Controller {
   public void setOrderStatus() {
     String spacing = createSpacing("Hawaii pizza", 50);
     System.out.println("Hawaii Pizza" + spacing);
+  }
+
+  public void cancelOrder() {
+    int input = sc.nextInt();
+    orderList.removeOrder(orderList.getOrders().get(input-1));
   }
 
   public void exit(){
