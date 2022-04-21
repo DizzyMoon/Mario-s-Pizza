@@ -1,8 +1,6 @@
 package com.company;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class Controller {
@@ -10,6 +8,7 @@ public class Controller {
   private OrderList orderList = new OrderList();
   private OrderHistory orderHistory = new OrderHistory();
   private PizzaMenu pizzaMenu = new PizzaMenu();
+  private Calendar cal = Calendar.getInstance();
 
   private Scanner sc = new Scanner(System.in);
   private boolean running = true;
@@ -53,27 +52,32 @@ public class Controller {
       System.out.print(pizza);
       System.out.print(createSpacing(pizza.toString(), 80) + " ");
       System.out.println(pizza.getPrice() + ",-");
-
     }
 
   }
 
   public void showOrder() {
-
+    int input = sc.nextInt();
+    if (!(input < orderList.getOrders().size() || input > orderList.getOrders().size())){
+      System.out.println(orderList.getOrders().get(input - 1));
+    } else{
+      System.out.println("Ordren findes ikke");
+    }
   }
 
 
   public void showOrderHistory() {
     for (Order order : orderList.getOrders()){
-      System.out.print(order);
+      System.out.println(order + " - STATUS: " + order.getStatus().name() + ", Bestilt: " + order.getHour() + ":" + order.getMinute() + " d. " + order.getDateOfMonth() + "/" + order.getMonth());
     }
   }
 
   public void addOrder() {
-    int input = sc.nextInt();
-    Pizza pizza1 = new Pizza(1, "Hawaii", new ArrayList<String>(Arrays.asList("Ananas")), 64);
-    Order order1 = new Order(pizza1, "Uden brød", 15, 3, 5, 4, OrderStatus.ORDERED);
-    orderList.addOrder(order1);
+    int pizzaNum = sc.nextInt();
+    sc.nextLine();
+    String pizzaDesc = sc.nextLine();
+
+    orderList.addOrder(new Order(pizzaMenu.getPizzas().get(pizzaNum - 1), pizzaDesc, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), OrderStatus.ORDERED));
   }
 
   public void setOrderStatus() {

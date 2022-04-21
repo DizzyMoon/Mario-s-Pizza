@@ -51,6 +51,6 @@ public class Order {
     }
 
     public String toString(){
-        return pizza.toString();
+        return pizza.toString() + ", " + note;
     }
 }
