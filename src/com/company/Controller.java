@@ -18,6 +18,8 @@ public class Controller {
     pizzaMenu.createPizzas();
 
     while (running) {
+      showOptions();
+
       int input = sc.nextInt();
 
       switch (input) {
@@ -31,6 +33,19 @@ public class Controller {
       }
     }
 
+  }
+
+
+  public void showOptions() {
+    System.out.println();
+    System.out.println("1: Vis menukort");
+    System.out.println("2: Vis bestilling");
+    System.out.println("3: Vis bestillingshistorik");
+    System.out.println("4: Tilføj bestilling");
+    System.out.println("5: Ændr bestilling");
+    System.out.println("6: Slet bestilling");
+    System.out.println("7: Afslut");
+    System.out.println();
   }
 
   public void showMenu() {
@@ -67,9 +82,14 @@ public class Controller {
   }
 
   public void cancelOrder() {
+    System.out.println("Slet bestillingsnummer:");
     int input = sc.nextInt();
-    orderList.removeOrder(orderList.getOrders().get(input-1));
-  }
+
+    if (!(input < orderList.getOrders().size() || input > orderList.getOrders().size())) {
+      orderList.removeOrder(orderList.getOrders().get(input - 1));
+    } else
+      System.out.println("Bestillingsnummer findes ikke");
+    }
 
   public void exit(){
     running = false;
