@@ -33,7 +33,12 @@ public class Controller {
   }
 
   public void showMenu() {
-    System.out.println(pizzaMenu.getPizzas());
+    for (Pizza pizza : pizzaMenu.getPizzas()){
+      System.out.print(pizza);
+      System.out.print(createSpacing(pizza.toString(), 80) + " ");
+      System.out.println(pizza.getPrice() + ",-");
+
+    }
 
   }
 
@@ -44,7 +49,7 @@ public class Controller {
 
   public void showOrderHistory() {
     for (Order order : orderList.getOrders()){
-      System.out.println(order);
+      System.out.print(order);
     }
   }
 
@@ -56,7 +61,7 @@ public class Controller {
   }
 
   public void setOrderStatus() {
-    String spacing = createSpacing("Hawaii pizza");
+    String spacing = createSpacing("Hawaii pizza", 50);
     System.out.println("Hawaii Pizza" + spacing);
   }
 
@@ -64,9 +69,9 @@ public class Controller {
     running = false;
   }
 
-  public String createSpacing(String initiate) {
+  public String createSpacing(String initiate, int amount) {
     StringBuilder sb = new StringBuilder();
-    for (int i = 50 - initiate.length(); i != 0; i--) {
+    for (int i = amount - initiate.length(); i != 0; i--) {
       sb.append(".");
     }
     sb.append(":");

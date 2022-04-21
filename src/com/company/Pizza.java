@@ -32,6 +32,6 @@ public class Pizza {
     }
 
     public String toString(){
-        return "Number: " + number + ", " + name;
+        return number + " - " + name + ", " + ingredients;
     }
 }
