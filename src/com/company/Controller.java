@@ -68,7 +68,7 @@ public class Controller {
 
   public void showOrderHistory() {
     for (Order order : orderList.getOrders()){
-      System.out.println(order + " - STATUS: " + order.getStatus().name() + ", Bestilt: " + order.getHour() + ":" + order.getMinute() + " d. " + order.getDateOfMonth() + "/" + order.getMonth());
+      System.out.println(order + " - STATUS: " + String.valueOf(order.getStatus().name()) + ", Bestilt: " + order.getHour() + ":" + order.getMinute() + " d. " + order.getDateOfMonth() + "/" + order.getMonth());
     }
   }
 
@@ -77,7 +77,7 @@ public class Controller {
     sc.nextLine();
     String pizzaDesc = sc.nextLine();
 
-    orderList.addOrder(new Order(pizzaMenu.getPizzas().get(pizzaNum - 1), pizzaDesc, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), OrderStatus.ORDERED));
+    orderList.addOrder(new Order(pizzaMenu.getPizzas().get(pizzaNum - 1), pizzaDesc, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH + 1), cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), OrderStatus.ORDERED));
   }
 
   public void setOrderStatus() {
