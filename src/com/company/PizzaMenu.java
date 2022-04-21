@@ -54,7 +54,6 @@ public class PizzaMenu {
 
     private ArrayList<Pizza> pizzas = new ArrayList<>();
 
-
     public ArrayList<Pizza> getPizzas() {
         return pizzas;
     }
