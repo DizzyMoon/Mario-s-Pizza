@@ -68,7 +68,7 @@ public class Controller {
 
   public void showOrderHistory() {
     for (Order order : orderList.getOrders()){
-      System.out.println(order + " - STATUS: " + String.valueOf(order.getStatus().name()) + ", Bestilt: " + order.getHour() + ":" + order.getMinute() + " d. " + order.getDateOfMonth() + "/" + order.getMonth());
+      System.out.println(order + " - STATUS: " + order.getStatus() + ", Bestilt: " + order.getHour() + ":" + order.getMinute() + " d. " + order.getDateOfMonth() + "/" + order.getMonth());
     }
   }
 
