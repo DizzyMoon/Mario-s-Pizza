@@ -236,7 +236,54 @@ public class Controller {
     }
   }
 
-    public OrderList sortOrderList(OrderList input) {
+    public OrderList sortOrderListByHour(OrderList input) {
+        ArrayList<Order> sortedHours = input.getOrders();
+        int sortedNums;
+        boolean sorted = false;
+
+        while (!sorted) {
+            sortedNums = 0;
+            for (int i = sortedHours.size() - 1; i > 0; i--) {
+                if (sortedHours.get(i).getHour() < sortedHours.get(i - 1).getHour()) {
+                    Order temp = sortedHours.get(i);
+                    sortedHours.set(i, sortedHours.get(i - 1));
+                    sortedHours.set(i - 1, temp);
+                } else sortedNums++;
+            }
+            if (sortedNums == sortedHours.size() - 1) {
+                sorted = true;
+            }
+        } return new OrderList(sortedHours);
+    }
+
+    public OrderList sortOrderListByMinute(OrderList input){
+        ArrayList<Order> sortedMinutes = input.getOrders();
+
+        boolean sorted = false;
+
+        while (!sorted) {
+            int sortedNums = 0;
+            for (int i = sortedMinutes.size() - 1; i > 0; i--) {
+                if (sortedMinutes.get(i).getMinute() < sortedMinutes.get(i - 1).getMinute()) {
+                    Order temp = sortedMinutes.get(i);
+                    sortedMinutes.set(i, sortedMinutes.get(i - 1));
+                    sortedMinutes.set(i - 1, temp);
+                } else sortedNums++;
+            }
+            if (sortedNums == sortedMinutes.size() - 1) {
+                sorted = true;
+            }
+        }
+        return new OrderList(sortedMinutes);
+    }
+
+    public OrderList sortOrderList(OrderList input){
+      OrderList orders = sortOrderListByHour(input);
+      return sortOrderListByMinute(orders);
+    }
+
+
+   /* public OrderList sortOrderList(OrderList input) {
         ArrayList<Order> sortedHours = input.getOrders();
         ArrayList<Order> sortedMinutes;
 
@@ -276,6 +323,8 @@ public class Controller {
         }
         return new OrderList(sortedMinutes);
     }
+
+    */
 
 
 
