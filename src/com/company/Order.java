@@ -8,6 +8,9 @@ public class Order {
     private int hour;
     private int minute;
     private OrderStatus orderStatus;
+    private boolean hasPickupTime;
+    private int takeawayHour;
+    private int takeawayMinute;
 
     public Order(Pizza pizza, String note, int dateOfMonth, int month, int hour, int minute, OrderStatus orderStatus) {
         this.pizza = pizza;
@@ -17,6 +20,20 @@ public class Order {
         this.hour = hour;
         this.minute = minute;
         this.orderStatus = orderStatus;
+        hasPickupTime = false;
+    }
+
+    public Order(Pizza pizza, String note, int dateOfMonth, int month, int hour, int minute, OrderStatus orderStatus, int takeawayHour, int takeawayMinute) {
+        this.pizza = pizza;
+        this.note = note;
+        this.dateOfMonth = dateOfMonth;
+        this.month = month;
+        this.hour = hour;
+        this.minute = minute;
+        this.orderStatus = orderStatus;
+        this.takeawayHour = takeawayHour;
+        this.takeawayMinute = takeawayMinute;
+        hasPickupTime = true;
     }
 
     public Pizza getPizza() {
@@ -49,6 +66,18 @@ public class Order {
 
     public void setStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public boolean getHasPickupTime() {
+        return hasPickupTime;
+    }
+
+    public int getTakeawayHour() {
+        return takeawayHour;
+    }
+
+    public int getTakeawayMinute() {
+        return takeawayMinute;
     }
 
     public String toString(){
