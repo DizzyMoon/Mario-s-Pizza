@@ -66,11 +66,15 @@ public class Controller {
     System.out.println("Aktive ordre:");
     if (orderList.getOrders().size() > 0) {
       for (int i = 0; i < orderList.getOrders().size(); i++) {
-        System.out.println(i+1 + ": " + sortOrderList(orderList).getOrders().get(i).getDateOfMonth() + "/" + sortOrderList(orderList).getOrders().get(i).getMonth() + " kl. " + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getHour()) + ":" + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getMinute()) + " - Pizza #" + sortOrderList(orderList).getOrders().get(i).getPizza().getNumber() + ": " + sortOrderList(orderList).getOrders().get(i).getPizza().getName() + " - Note: " + sortOrderList(orderList).getOrders().get(i).getNote() + " - Status: " + sortOrderList(orderList).getOrders().get(i).getStatus().name());
+        System.out.print(i+1 + ": " + sortOrderList(orderList).getOrders().get(i).getDateOfMonth() + "/" + sortOrderList(orderList).getOrders().get(i).getMonth() + " kl. " + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getHour()) + ":" + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getMinute()) + " - Pizza #" + sortOrderList(orderList).getOrders().get(i).getPizza().getNumber() + ": " + sortOrderList(orderList).getOrders().get(i).getPizza().getName() + " - Note: " + sortOrderList(orderList).getOrders().get(i).getNote() + " - Status: " + sortOrderList(orderList).getOrders().get(i).getStatus().name());
+        if (orderList.getOrders().get(i).getHasPickupTime()) {
+          System.out.println(" - Afhentningstidspunkt: " + orderList.getOrders().get(i).getTakeawayHour() + ":" + orderList.getOrders().get(i).getTakeawayMinute());
+        }
       }
     } else {
       System.out.println("Der er ingen aktive ordre.");
     }
+    System.out.println();
   }
 
   public void showOrderHistory() {
