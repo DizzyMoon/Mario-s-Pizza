@@ -23,7 +23,7 @@ public class PizzaMenu {
             ArrayList<String> ingredients14 = new ArrayList<String>(Arrays.asList( "tomatsauce", "ost", "pepperoni", "bacon", "løg", "oregano"));
             Pizza pizza1 = new Pizza(1, "Vesuvio", ingredients1, 57);
             Pizza pizza2 = new Pizza(2, "Amerikaner", ingredients2, 53);
-            Pizza pizza3 = new Pizza(1, "Cacciatore", ingredients3, 57);
+            Pizza pizza3 = new Pizza(3, "Cacciatore", ingredients3, 57);
             Pizza pizza4 = new Pizza(4, "Carbona", ingredients4, 63);
             Pizza pizza5 = new Pizza(5,"Dennis", ingredients5, 65);
             Pizza pizza6 = new Pizza(6, "Bertil", ingredients6, 57);
@@ -34,7 +34,7 @@ public class PizzaMenu {
             Pizza pizza11 = new Pizza(11, "Hawaii", ingredients11, 61);
             Pizza pizza12 = new Pizza(12, "Le Blissola", ingredients12, 61);
             Pizza pizza13 = new Pizza(13, "Venezia", ingredients13, 61);
-            Pizza pizza14 = new Pizza(13, "Mafia", ingredients14, 61);
+            Pizza pizza14 = new Pizza(14, "Mafia", ingredients14, 61);
 
             pizzas.add(pizza1);
             pizzas.add(pizza2);
