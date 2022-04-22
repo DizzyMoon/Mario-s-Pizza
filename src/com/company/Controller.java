@@ -112,8 +112,57 @@ public class Controller {
     System.out.print("Skriv note: ");
     String pizzaNote = sc.nextLine();
 
-    orderList.addOrder(new Order(pizzaMenu.getPizzas().get(pizzaNum - 1), pizzaNote, LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), OrderStatus.ORDERED));
-    System.out.println("Pizza #" + pizzaNum + " " + pizzaMenu.getPizzas().get(pizzaNum - 1).getName() + " er blevet bestilt.");
+      boolean pickedYesNo = false;
+      while (!pickedYesNo) {
+          System.out.print("Vælg afhentningstidspunkt? (j/n): ");
+          String yesNo = sc.nextLine();
+
+          switch (yesNo) {
+              case "j" -> {
+                  int minInt = -1;
+                  int hourInt = -1;
+                  String hourString;
+                  boolean pickedHour = false;
+                  while (!pickedHour) {
+                      System.out.print("Vælg time: ");
+                      hourString = sc.nextLine();
+
+                      if (tryParseInt(hourString)) {
+                          hourInt = Integer.parseInt(hourString);
+                      } else {
+                          System.out.println("Ugyldig kommando.");
+                      }
+                      if ((hourInt >= 0) && (hourInt <= 23)) {
+                          pickedHour = true;
+                      }
+                  }
+                  boolean pickedMin = false;
+                  while (!pickedMin) {
+                      System.out.println("Vælg minut: ");
+                      String minString = sc.nextLine();
+                      if (tryParseInt(minString)) {
+                          minInt = Integer.parseInt(minString);
+                      } else {
+                          System.out.println("Ugyldig kommando.");
+                      }
+                      if ((minInt > 0) && (minInt < 59)) {
+                          pickedMin = true;
+                      }
+                  }
+                  pickedYesNo = true;
+                  orderList.addOrder(new Order(pizzaMenu.getPizzas().get(pizzaNum - 1), pizzaNote, LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), OrderStatus.ORDERED, hourInt, minInt));
+                  System.out.println("Pizza #" + pizzaNum + " " + pizzaMenu.getPizzas().get(pizzaNum - 1).getName() + " er blevet bestilt.");
+              }
+              case "n" -> {
+                  pickedYesNo = true;
+                  orderList.addOrder(new Order(pizzaMenu.getPizzas().get(pizzaNum - 1), pizzaNote, LocalDateTime.now().getDayOfMonth(), LocalDateTime.now().getMonthValue(), LocalDateTime.now().getHour(), LocalDateTime.now().getMinute(), OrderStatus.ORDERED));
+                  System.out.println("Pizza #" + pizzaNum + " " + pizzaMenu.getPizzas().get(pizzaNum - 1).getName() + " er blevet bestilt.");
+              }
+              default -> {
+                  System.out.println("Ugyldig kommando.");
+              }
+          }
+      }
   }
 
   public void setOrderStatus() {
