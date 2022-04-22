@@ -138,7 +138,7 @@ public class Controller {
                   }
                   boolean pickedMin = false;
                   while (!pickedMin) {
-                      System.out.println("Vælg minut: ");
+                      System.out.print("Vælg minut: ");
                       String minString = sc.nextLine();
                       if (tryParseInt(minString)) {
                           minInt = Integer.parseInt(minString);
