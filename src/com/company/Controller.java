@@ -61,21 +61,21 @@ public class Controller {
         }
     }
 
-  public void showOrders() {
-    System.out.println();
-    System.out.println("Aktive ordre:");
-    if (orderList.getOrders().size() > 0) {
-      for (int i = 0; i < orderList.getOrders().size(); i++) {
-        System.out.print(i+1 + ": " + sortOrderList(orderList).getOrders().get(i).getDateOfMonth() + "/" + sortOrderList(orderList).getOrders().get(i).getMonth() + " kl. " + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getHour()) + ":" + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getMinute()) + " - Pizza #" + sortOrderList(orderList).getOrders().get(i).getPizza().getNumber() + ": " + sortOrderList(orderList).getOrders().get(i).getPizza().getName() + " - Note: " + sortOrderList(orderList).getOrders().get(i).getNote() + " - Status: " + sortOrderList(orderList).getOrders().get(i).getStatus().name());
-        if (orderList.getOrders().get(i).getHasPickupTime()) {
-          System.out.println(" - Afhentningstidspunkt: " + orderList.getOrders().get(i).getTakeawayHour() + ":" + orderList.getOrders().get(i).getTakeawayMinute());
+    public void showOrders() {
+        System.out.println();
+        System.out.println("Aktive ordre:");
+        if (orderList.getOrders().size() > 0) {
+            for (int i = 0; i < orderList.getOrders().size(); i++) {
+                System.out.print(i + 1 + ": " + sortOrderList(orderList).getOrders().get(i).getDateOfMonth() + "/" + sortOrderList(orderList).getOrders().get(i).getMonth() + " kl. " + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getHour()) + ":" + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getMinute()) + " - Pizza #" + sortOrderList(orderList).getOrders().get(i).getPizza().getNumber() + ": " + sortOrderList(orderList).getOrders().get(i).getPizza().getName() + " - Note: " + sortOrderList(orderList).getOrders().get(i).getNote() + " - Status: " + sortOrderList(orderList).getOrders().get(i).getStatus().name());
+                if (orderList.getOrders().get(i).getHasPickupTime()) {
+                    System.out.println(" - Afhentningstidspunkt: " + orderList.getOrders().get(i).getTakeawayHour() + ":" + orderList.getOrders().get(i).getTakeawayMinute());
+                }
+            }
+        } else {
+            System.out.println("Der er ingen aktive ordre.");
         }
-      }
-    } else {
-      System.out.println("Der er ingen aktive ordre.");
+        System.out.println();
     }
-    System.out.println();
-  }
 
     public void showOrderHistory() {
         System.out.println();
@@ -100,7 +100,7 @@ public class Controller {
     private void addOrder() {
         showMenu();
 
-        int pizzaNum = 0;
+        int pizzaNum = -1;
         pizzaNum = pickPizza(pizzaNum);
 
         System.out.print("Skriv note: ");
@@ -188,7 +188,7 @@ public class Controller {
     public void setOrderStatus() {
         showOrders();
 
-        int orderInput = 0;
+        int orderInput = -1;
         boolean intFound = false;
         while (intFound == false) {
             System.out.println();
@@ -233,7 +233,7 @@ public class Controller {
                     orderHistory.addOrder(orderList.getOrders().get(orderInput - 1));
                     System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Betalt' og fjernet fra ordre listen.");
                     ArrayList<String[]> ordreData = new ArrayList<>();
-                    ordreData.add(new String[]{Integer.toString(orderList.getOrders().get(orderInput - 1).getDateOfMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getHour()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMinute()), orderList.getOrders().get(orderInput - 1).getPizza().getName(), Integer.toString(orderList.getOrders().get(orderInput - 1).getPizza().getPrice()), orderList.getOrders().get(orderInput - 1).getStatus().name()});
+                    ordreData.add(new String[] { Integer.toString(orderList.getOrders().get(orderInput - 1).getDateOfMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getHour()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMinute()), orderList.getOrders().get(orderInput - 1).getPizza().getName(), Integer.toString(orderList.getOrders().get(orderInput - 1).getPizza().getPrice()), orderList.getOrders().get(orderInput - 1).getStatus().name() });
                     try {
                         convertToCSV(ordreData);
                     } catch (IOException e) {
@@ -296,7 +296,6 @@ public class Controller {
         }
         return new OrderList(sortedMinutes);
     }
-
 
 
     public ArrayList<Integer> sortIntList(ArrayList<Integer> input) {
