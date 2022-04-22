@@ -57,6 +57,7 @@ public class Controller {
   }
 
   public void showOrder() {
+    System.out.println("Indtast bestillingsnummer:");
     int input = sc.nextInt();
     if (!(input < orderList.getOrders().size() || input > orderList.getOrders().size())){
       System.out.println(orderList.getOrders().get(input - 1));
@@ -73,8 +74,10 @@ public class Controller {
   }
 
   public void addOrder() {
+    System.out.println("Indtast nummer på pizza:");
     int pizzaNum = sc.nextInt();
     sc.nextLine();
+    System.out.println("Indtast ændringer til pizzaen (tast Enter, hvis ingen):");
     String pizzaDesc = sc.nextLine();
 
     orderList.addOrder(new Order(pizzaMenu.getPizzas().get(pizzaNum - 1), pizzaDesc, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH + 1), cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), OrderStatus.ORDERED));
