@@ -61,7 +61,7 @@ public class Controller {
         System.out.println("Aktive ordre:");
         if (orderList.getOrders().size() > 0) {
             for (int i = 0; i < orderList.getOrders().size(); i++) {
-                System.out.println(i + 1 + ": " + orderList.getOrders().get(i).getDateOfMonth() + "/" + orderList.getOrders().get(i).getMonth() + " kl. " + String.format("%02d", orderList.getOrders().get(i).getHour()) + ":" + String.format("%02d", orderList.getOrders().get(i).getMinute()) + " - Pizza #" + orderList.getOrders().get(i).getPizza().getNumber() + ": " + orderList.getOrders().get(i).getPizza().getName() + " - Note: " + orderList.getOrders().get(i).getNote() + " - Status: " + orderList.getOrders().get(i).getStatus().name());
+                System.out.println(i + 1 + ": " + sortOrderList(orderList).getOrders().get(i).getDateOfMonth() + "/" + sortOrderList(orderList).getOrders().get(i).getMonth() + " kl. " + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getHour()) + ":" + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getMinute()) + " - Pizza #" + sortOrderList(orderList).getOrders().get(i).getPizza().getNumber() + ": " + sortOrderList(orderList).getOrders().get(i).getPizza().getName() + " - Note: " + sortOrderList(orderList).getOrders().get(i).getNote() + " - Status: " + sortOrderList(orderList).getOrders().get(i).getStatus().name());
             }
         } else {
             System.out.println("Der er ingen aktive ordre.");
@@ -175,6 +175,48 @@ public class Controller {
         }
     }
 
+    public OrderList sortOrderList(OrderList input) {
+        ArrayList<Order> sortedHours = input.getOrders();
+        ArrayList<Order> sortedMinutes;
+
+        int sortedNums;
+        boolean sorted = false;
+
+        while (!sorted) {
+            sortedNums = 0;
+            for (int i = sortedHours.size() - 1; i > 0; i--) {
+                if (sortedHours.get(i).getHour() < sortedHours.get(i - 1).getHour()) {
+                    Order temp = sortedHours.get(i);
+                    sortedHours.set(i, sortedHours.get(i - 1));
+                    sortedHours.set(i - 1, temp);
+                } else sortedNums++;
+            }
+            if (sortedNums == sortedHours.size() - 1) {
+                sorted = true;
+            }
+        }
+
+        sortedMinutes = sortedHours;
+
+        sorted = false;
+
+        while (!sorted) {
+            sortedNums = 0;
+            for (int i = sortedMinutes.size() - 1; i > 0; i--) {
+                if (sortedMinutes.get(i).getMinute() < sortedMinutes.get(i - 1).getMinute()) {
+                    Order temp = sortedMinutes.get(i);
+                    sortedMinutes.set(i, sortedMinutes.get(i - 1));
+                    sortedMinutes.set(i - 1, temp);
+                } else sortedNums++;
+            }
+            if (sortedNums == sortedMinutes.size() - 1) {
+                sorted = true;
+            }
+        }
+        return new OrderList(sortedMinutes);
+    }
+
+
     public ArrayList<Integer> sortIntList(ArrayList<Integer> input) {
 
         ArrayList<Integer> arrayList = input;
@@ -183,15 +225,16 @@ public class Controller {
 
         while (!sorted) {
             sortedNums = 0;
-            for (int i = arrayList.size()-1; i > 0; i--) {
+            for (int i = arrayList.size() - 1; i > 0; i--) {
                 if (arrayList.get(i) < arrayList.get(i - 1)) {
                     int temp = arrayList.get(i);
                     arrayList.set(i, arrayList.get(i - 1));
                     arrayList.set(i - 1, temp);
                 } else sortedNums++;
             }
-            System.out.println("sorting");
-            if (sortedNums == arrayList.size() - 1) sorted = true;
+            if (sortedNums == arrayList.size() - 1) {
+                sorted = true;
+            }
         }
         return arrayList;
     }

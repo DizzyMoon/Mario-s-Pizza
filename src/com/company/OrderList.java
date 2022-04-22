@@ -5,6 +5,14 @@ import java.util.ArrayList;
 public class OrderList {
     private ArrayList<Order> orders = new ArrayList<>();
 
+    public OrderList(ArrayList<Order> orders){
+        this.orders = orders;
+    }
+
+    public OrderList(){
+
+    }
+
     public ArrayList<Order> getOrders() {
         return orders;
     }
