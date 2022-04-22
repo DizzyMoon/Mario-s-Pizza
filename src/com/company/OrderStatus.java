@@ -4,5 +4,6 @@ public enum OrderStatus {
     ORDERED,
     COOKING,
     FINISHED,
-    PAID
+    PAID,
+    CANCELLED
 }

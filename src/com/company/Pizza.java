@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Pizza {
     private final int number;
     private final String name;
-    private final ArrayList<String> ingredients;
+    private ArrayList<String> ingredients;
     private final int price;
 
     public Pizza(int number, String name, ArrayList<String> ingredients, int price) {

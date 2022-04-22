@@ -16,6 +16,7 @@ public class Order {
         this.month = month;
         this.hour = hour;
         this.minute = minute;
+        this.orderStatus = orderStatus;
     }
 
     public Pizza getPizza() {
