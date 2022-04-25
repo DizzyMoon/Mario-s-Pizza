@@ -24,4 +24,12 @@ public class OrderList {
     public void removeOrder(Order order) {
         orders.remove(order);
     }
+
+    public String toString(){
+        return String.valueOf(orders);
+    }
+
+    public void setOrders(ArrayList<Order> orders){
+        this.orders = orders;
+    }
 }
