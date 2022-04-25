@@ -46,7 +46,7 @@ public class Controller {
         System.out.println("4: Tilføj ordre");
         System.out.println("5: Ændr ordre status");
         System.out.println("6: Afslut");
-        System.out.println();
+        //System.out.println();
     }
 
     private void showMenu() {
@@ -65,10 +65,11 @@ public class Controller {
             for (int i = 0; i < orderList.getOrders().size(); i++) {
                 System.out.print(i + 1 + ": " + sortOrderList(orderList).getOrders().get(i).getDateOfMonth() + "/" + sortOrderList(orderList).getOrders().get(i).getMonth() + " kl. " + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getHour()) + ":" + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getMinute()) + " - Pizza #" + sortOrderList(orderList).getOrders().get(i).getPizza().getNumber() + ": " + sortOrderList(orderList).getOrders().get(i).getPizza().getName() + " - Note: " + sortOrderList(orderList).getOrders().get(i).getNote() + " - Status: " + sortOrderList(orderList).getOrders().get(i).getStatus().name());
                 if (orderList.getOrders().get(i).getHasPickupTime()) {
-                    System.out.println(" - Afhentningstidspunkt: " + orderList.getOrders().get(i).getTakeawayHour() + ":" + orderList.getOrders().get(i).getTakeawayMinute());
+                    System.out.print(" - Afhentningstidspunkt: " + orderList.getOrders().get(i).getTakeawayHour() + ":" + orderList.getOrders().get(i).getTakeawayMinute());
                 } else {
                     System.out.println();
                 }
+                System.out.println();
             }
         } else {
             System.out.println("Der er ingen aktive ordre.");
