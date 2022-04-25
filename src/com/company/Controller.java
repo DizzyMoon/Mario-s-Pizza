@@ -445,8 +445,9 @@ public class Controller {
             dataLines.stream()
                     .map(this::convertToCSV)
                     .forEach(pw::println);
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        //assertTrue(csvOutputFile.exists());
     }
 
 }
