@@ -55,7 +55,7 @@ public class PizzaMenu {
         Pizza pizza11 = new Pizza(11, "Hawaii", ingredients11, 61);
         Pizza pizza12 = new Pizza(12, "Le Blissola", ingredients12, 61);
         Pizza pizza13 = new Pizza(13, "Venezia", ingredients13, 61);
-        Pizza pizza14 = new Pizza(13, "Mafia", ingredients14, 61);
+        Pizza pizza14 = new Pizza(14, "Mafia", ingredients14, 61);
 
         pizzas.add(pizza1);
         pizzas.add(pizza2);

@@ -1,22 +1,19 @@
 package com.company;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Controller {
 
-    private OrderList orderList = new OrderList();
-    private OrderHistory orderHistory = new OrderHistory();
-    private PizzaMenu pizzaMenu = new PizzaMenu();
     private Scanner sc = new Scanner(System.in);
+    private PizzaMenu pizzaMenu = new PizzaMenu();
+    private OrderList orderList = new OrderList();
+    private String historyFilePath = "src/OrdreHistorik.csv";
+
+    private OrderHistory orderHistory = new OrderHistory(); // (Deprecated)
 
     private boolean running = true;
 
@@ -41,7 +38,7 @@ public class Controller {
         }
     }
 
-    public void showOptions() {
+    private void showOptions() {
         System.out.println();
         System.out.println("1: Vis menukort");
         System.out.println("2: Vis ordrer");
@@ -52,7 +49,7 @@ public class Controller {
         System.out.println();
     }
 
-    public void showMenu() {
+    private void showMenu() {
         System.out.println();
         for (Pizza pizza : pizzaMenu.getPizzas()) {
             System.out.print(pizza);
@@ -61,23 +58,64 @@ public class Controller {
         }
     }
 
-    public void showOrders() {
+    private void showOrders() {
         System.out.println();
         System.out.println("Aktive ordre:");
         if (orderList.getOrders().size() > 0) {
             for (int i = 0; i < orderList.getOrders().size(); i++) {
                 System.out.print(i + 1 + ": " + sortOrderList(orderList).getOrders().get(i).getDateOfMonth() + "/" + sortOrderList(orderList).getOrders().get(i).getMonth() + " kl. " + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getHour()) + ":" + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getMinute()) + " - Pizza #" + sortOrderList(orderList).getOrders().get(i).getPizza().getNumber() + ": " + sortOrderList(orderList).getOrders().get(i).getPizza().getName() + " - Note: " + sortOrderList(orderList).getOrders().get(i).getNote() + " - Status: " + sortOrderList(orderList).getOrders().get(i).getStatus().name());
                 if (orderList.getOrders().get(i).getHasPickupTime()) {
-                    System.out.println(" - Afhentningstidspunkt: " + sortOrderList(orderList).getOrders().get(i).getTakeawayHour() + ":" + sortOrderList(orderList).getOrders().get(i).getTakeawayMinute());
+                    System.out.println(" - Afhentningstidspunkt: " + orderList.getOrders().get(i).getTakeawayHour() + ":" + orderList.getOrders().get(i).getTakeawayMinute());
+                } else {
+                    System.out.println();
                 }
             }
         } else {
             System.out.println("Der er ingen aktive ordre.");
         }
-        System.out.println();
     }
 
-    public void showOrderHistory() {
+    private void showOrderHistory() {
+        try {
+            List<List<String>> data = new ArrayList<>();
+            FileReader fr = new FileReader(historyFilePath);
+            BufferedReader br = new BufferedReader(fr);
+
+            String line = br.readLine();
+            while (line != null) {
+                List<String> lineData = Arrays.asList(line.split(","));
+                data.add(lineData);
+                line = br.readLine();
+            }
+
+            System.out.println();
+            System.out.println("Ordre historik:");
+            int income = 0;
+            for (List<String> list : data) {
+                for (int i = 0; i < list.size(); i++) {
+                    System.out.print(list.get(i));
+                    switch (i) {
+                        case 0 -> System.out.print("/");
+                        case 2 -> System.out.print(":");
+                        case 5 -> {
+                            System.out.print(",- ");
+                            if (list.get(6).equals("PAID")) {
+                                income += Integer.parseInt(list.get(i));
+                            }
+                        }
+                        default -> System.out.print(" ");
+                    }
+                }
+                System.out.println();
+            }
+            System.out.println("Total fortjeneste: " + income + "kr.");
+            br.close();
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
+
+    private void showOrderHistoryDeprecated() {
         System.out.println();
         System.out.println("Ordre historik:");
         int totalEarnings = 0;
@@ -113,8 +151,9 @@ public class Controller {
 
             switch (yesNo) {
                 case "j" -> {
-                    int minInt = -1;
+                    pickedYesNo = true;
                     int hourInt = -1;
+                    int minInt = -1;
                     hourInt = pickHour(hourInt);
                     minInt = pickMin(minInt);
                     pickedYesNo = true;
@@ -178,7 +217,7 @@ public class Controller {
             } else {
                 System.out.println("Ugyldig kommando.");
             }
-            if ((minInt > 0) && (minInt < 59)) {
+            if ((minInt >= 0) && (minInt <= 59)) {
                 pickedMin = true;
             }
         }
@@ -230,20 +269,15 @@ public class Controller {
                 }
                 case "4" -> {
                     orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.PAID);
-                    orderHistory.addOrder(orderList.getOrders().get(orderInput - 1));
-                    System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Betalt' og fjernet fra ordre listen.");
-                    ArrayList<String[]> ordreData = new ArrayList<>();
-                    ordreData.add(new String[] { Integer.toString(orderList.getOrders().get(orderInput - 1).getDateOfMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getHour()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMinute()), orderList.getOrders().get(orderInput - 1).getPizza().getName(), Integer.toString(orderList.getOrders().get(orderInput - 1).getPizza().getPrice()), orderList.getOrders().get(orderInput - 1).getStatus().name() });
-                    try {
-                        convertToCSV(ordreData);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    // orderHistory.addOrder(orderList.getOrders().get(orderInput - 1));
+                    addOrderToHistory(orderInput);
                     orderList.removeOrder(orderList.getOrders().get(orderInput - 1));
+                    System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Betalt' og fjernet fra ordre listen.");
                 }
                 case "5" -> {
                     orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.CANCELLED);
-                    orderHistory.addOrder(orderList.getOrders().get(orderInput - 1));
+                    // orderHistory.addOrder(orderList.getOrders().get(orderInput - 1));
+                    addOrderToHistory(orderInput);
                     orderList.removeOrder(orderList.getOrders().get(orderInput - 1));
                     System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Annulleret' og fjernet fra ordre listen.");
                 }
@@ -256,35 +290,55 @@ public class Controller {
         }
     }
 
-    public OrderList sortOrderListByHour(OrderList input) {
-        ArrayList<Order> sortedHours = input.getOrders();
-        int sortedNums;
-        boolean sorted = false;
+    private void addOrderToHistory(int orderInput) {
+        ArrayList<String[]> ordreHistorik = new ArrayList<>();
+        try {
+            File file = new File(historyFilePath);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            String[] tempArray;
+            while ((line = br.readLine()) != null) {
+                tempArray = line.split(",");
+                ordreHistorik.add(tempArray);
+            }
+            br.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
 
-        while (!sorted) {
-            sortedNums = 0;
-            for (int i = sortedHours.size() - 1; i > 0; i--) {
-              if (!(sortedHours.get(i).getHasPickupTime())) {
-                if (sortedHours.get(i).getHour() < sortedHours.get(i - 1).getHour()) {
-                  Order temp = sortedHours.get(i);
-                  sortedHours.set(i, sortedHours.get(i - 1));
-                  sortedHours.set(i - 1, temp);
-                } else sortedNums++;
-              } else {
-                if (sortedHours.get(i).getTakeawayHour() < sortedHours.get(i - 1).getTakeawayHour()){
-                  Order temp = sortedHours.get(i);
-                  sortedHours.set(i, sortedHours.get(i - 1));
-                  sortedHours.set(i - 1, temp);
-                } else sortedNums++;
-              }
-            }
-            if (sortedNums == sortedHours.size() - 1) {
-                sorted = true;
-            }
-        } return new OrderList(sortedHours);
+        ordreHistorik.add(new String[]{Integer.toString(orderList.getOrders().get(orderInput - 1).getDateOfMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getHour()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMinute()), orderList.getOrders().get(orderInput - 1).getPizza().getName(), Integer.toString(orderList.getOrders().get(orderInput - 1).getPizza().getPrice()), orderList.getOrders().get(orderInput - 1).getStatus().name()});
+        try {
+            convertToCSV(ordreHistorik);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public OrderList sortOrderListByMinute(OrderList input){
+    public OrderList sortOrderList(OrderList input) {
+        public OrderList sortOrderListByHour (OrderList input){
+            ArrayList<Order> sortedHours = input.getOrders();
+            int sortedNums;
+            boolean sorted = false;
+
+            while (!sorted) {
+                sortedNums = 0;
+                for (int i = sortedHours.size() - 1; i > 0; i--) {
+                    if (sortedHours.get(i).getHour() < sortedHours.get(i - 1).getHour()) {
+                        Order temp = sortedHours.get(i);
+                        sortedHours.set(i, sortedHours.get(i - 1));
+                        sortedHours.set(i - 1, temp);
+                    } else sortedNums++;
+                }
+                if (sortedNums == sortedHours.size() - 1) {
+                    sorted = true;
+                }
+            }
+            return new OrderList(sortedHours);
+        }
+    }
+
+    public OrderList sortOrderListByMinute(OrderList input) {
         ArrayList<Order> sortedMinutes = input.getOrders();
 
         boolean sorted = false;
@@ -292,19 +346,11 @@ public class Controller {
         while (!sorted) {
             int sortedNums = 0;
             for (int i = sortedMinutes.size() - 1; i > 0; i--) {
-              if (!(sortedMinutes.get(i).getHasPickupTime())) {
                 if (sortedMinutes.get(i).getMinute() < sortedMinutes.get(i - 1).getMinute()) {
-                  Order temp = sortedMinutes.get(i);
-                  sortedMinutes.set(i, sortedMinutes.get(i - 1));
-                  sortedMinutes.set(i - 1, temp);
+                    Order temp = sortedMinutes.get(i);
+                    sortedMinutes.set(i, sortedMinutes.get(i - 1));
+                    sortedMinutes.set(i - 1, temp);
                 } else sortedNums++;
-              } else {
-                if (sortedMinutes.get(i).getTakeawayMinute() < sortedMinutes.get(i - 1).getTakeawayMinute()){
-                  Order temp = sortedMinutes.get(i);
-                  sortedMinutes.set(i, sortedMinutes.get(i - 1));
-                  sortedMinutes.set(i - 1, temp);
-                } else sortedNums++;
-              }
             }
             if (sortedNums == sortedMinutes.size() - 1) {
                 sorted = true;
@@ -312,14 +358,14 @@ public class Controller {
         }
         return new OrderList(sortedMinutes);
     }
-
-    public OrderList sortOrderList(OrderList input){
-      OrderList orders = sortOrderListByHour(input);
-      return sortOrderListByMinute(orders);
+    /*
+    public OrderList sortOrderList(OrderList input) {
+        OrderList orders = sortOrderListByHour(input);
+        return sortOrderListByMinute(orders);
     }
+    */
 
-
-   /* public OrderList sortOrderList(OrderList input) {
+    public OrderList sortOrderList(OrderList input) {
         ArrayList<Order> sortedHours = input.getOrders();
         ArrayList<Order> sortedMinutes;
 
@@ -359,8 +405,6 @@ public class Controller {
         }
         return new OrderList(sortedMinutes);
     }
-
-    */
 
 
     public ArrayList<Integer> sortIntList(ArrayList<Integer> input) {
