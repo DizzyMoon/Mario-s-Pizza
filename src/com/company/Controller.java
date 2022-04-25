@@ -66,7 +66,7 @@ public class Controller {
       for (int i = 0; i < orderList.getOrders().size(); i++) {
         System.out.print(i + 1 + ": " + orderList.getOrders().get(i).getDateOfMonth() + "/" + orderList.getOrders().get(i).getMonth() + " kl. " + String.format("%02d", orderList.getOrders().get(i).getHour()) + ":" + String.format("%02d", orderList.getOrders().get(i).getMinute()) + " - Pizza #" + orderList.getOrders().get(i).getPizza().getNumber() + ": " + orderList.getOrders().get(i).getPizza().getName() + " - Note: " + orderList.getOrders().get(i).getNote() + " - Status: " + orderList.getOrders().get(i).getStatus().name());
         if (orderList.getOrders().get(i).getHasPickupTime()) {
-          System.out.println(" - Afhentningstidspunkt: " + orderList.getOrders().get(i).getTakeawayHour() + ":" + orderList.getOrders().get(i).getTakeawayMinute());
+          System.out.println(" - Afhentningstidspunkt: " + String.format("%02d", orderList.getOrders().get(i).getTakeawayHour()) + ":" + String.format("%02d", orderList.getOrders().get(i).getTakeawayMinute()));
         } else {
           System.out.println();
         }
