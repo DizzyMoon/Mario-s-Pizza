@@ -11,9 +11,9 @@ public class Controller {
   private Scanner sc = new Scanner(System.in);
   private PizzaMenu pizzaMenu = new PizzaMenu();
   private OrderList orderList = new OrderList();
-  private String historyFilePath = "src/OrdreHistorik.csv";
+  private String historyFilePath = "OrdreHistorik.csv";
 
-  private OrderHistory orderHistory = new OrderHistory(); // (Deprecated)
+  private File historyFile = new File(historyFilePath);
 
   private boolean running = true;
 
@@ -79,7 +79,7 @@ public class Controller {
   private void showOrderHistory() {
     try {
       List<List<String>> data = new ArrayList<>();
-      FileReader fr = new FileReader(historyFilePath);
+      FileReader fr = new FileReader(historyFile);
       BufferedReader br = new BufferedReader(fr);
 
       String line = br.readLine();
@@ -116,25 +116,7 @@ public class Controller {
     }
   }
 
-  private void showOrderHistoryDeprecated() {
-    System.out.println();
-    System.out.println("Ordre historik:");
-    int totalEarnings = 0;
-    if (orderHistory.getOrders().size() > 0) {
-      for (int i = 0; i < orderHistory.getOrders().size(); i++) {
-        System.out.print(i + 1 + ": " + orderHistory.getOrders().get(i).getDateOfMonth() + "/" + orderHistory.getOrders().get(i).getMonth() + " kl. " + String.format("%02d", orderHistory.getOrders().get(i).getHour()) + ":" + String.format("%02d", orderHistory.getOrders().get(i).getMinute()) + " - Pizza #" + orderHistory.getOrders().get(i).getPizza().getNumber() + ": " + orderHistory.getOrders().get(i).getPizza().getName() + " - Note: " + orderHistory.getOrders().get(i).getNote() + " - Status: " + orderHistory.getOrders().get(i).getStatus().name());
-        if (orderHistory.getOrders().get(i).getStatus() == OrderStatus.PAID) {
-          System.out.println(" - Fortjeneste: " + orderHistory.getOrders().get(i).getPizza().getPrice() + "kr.");
-          totalEarnings += orderHistory.getOrders().get(i).getPizza().getPrice();
-        } else {
-          System.out.println();
-        }
-      }
-      System.out.println("Total fortjeneste: " + totalEarnings + "kr.");
-    } else {
-      System.out.println("Der er ingen ordre i historikken.");
-    }
-  }
+
 
   private void addOrder() {
     showMenu();
@@ -255,58 +237,55 @@ public class Controller {
 
       String statusInput = sc.nextLine();
 
-      switch (statusInput) {
-        case "1" -> {
-          orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.ORDERED);
-          System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Bestilt'.");
+            switch (statusInput) {
+                case "1" -> {
+                    orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.ORDERED);
+                    System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Bestilt'.");
+                }
+                case "2" -> {
+                    orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.COOKING);
+                    System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Tilberedes'.");
+                }
+                case "3" -> {
+                    orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.FINISHED);
+                    System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Færdig'.");
+                }
+                case "4" -> {
+                    orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.PAID);
+                    addOrderToHistory(orderInput);
+                    orderList.removeOrder(orderList.getOrders().get(orderInput - 1));
+                    System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Betalt' og fjernet fra ordre listen.");
+                }
+                case "5" -> {
+                    orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.CANCELLED);
+                    addOrderToHistory(orderInput);
+                    orderList.removeOrder(orderList.getOrders().get(orderInput - 1));
+                    System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Annulleret' og fjernet fra ordre listen.");
+                }
+                default -> {
+                    System.out.println("Status findes ikke, vælg mellem 1-5.");
+                }
+            }
+        } else {
+            System.out.println("Ordre ikke fundet.");
         }
-        case "2" -> {
-          orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.COOKING);
-          System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Tilberedes'.");
-        }
-        case "3" -> {
-          orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.FINISHED);
-          System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Færdig'.");
-        }
-        case "4" -> {
-          orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.PAID);
-          // orderHistory.addOrder(orderList.getOrders().get(orderInput - 1));
-          addOrderToHistory(orderInput);
-          orderList.removeOrder(orderList.getOrders().get(orderInput - 1));
-          System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Betalt' og fjernet fra ordre listen.");
-        }
-        case "5" -> {
-          orderList.getOrders().get(orderInput - 1).setStatus(OrderStatus.CANCELLED);
-          // orderHistory.addOrder(orderList.getOrders().get(orderInput - 1));
-          addOrderToHistory(orderInput);
-          orderList.removeOrder(orderList.getOrders().get(orderInput - 1));
-          System.out.println("Ordre nummer " + orderInput + " er nu sat til 'Annulleret' og fjernet fra ordre listen.");
-        }
-        default -> {
-          System.out.println("Status findes ikke, vælg mellem 1-5.");
-        }
-      }
-    } else {
-      System.out.println("Ordre ikke fundet.");
     }
-  }
 
-  private void addOrderToHistory(int orderInput) {
-    ArrayList<String[]> ordreHistorik = new ArrayList<>();
-    try {
-      File file = new File(historyFilePath);
-      FileReader fr = new FileReader(file);
-      BufferedReader br = new BufferedReader(fr);
-      String line = "";
-      String[] tempArray;
-      while ((line = br.readLine()) != null) {
-        tempArray = line.split(",");
-        ordreHistorik.add(tempArray);
-      }
-      br.close();
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
-    }
+    private void addOrderToHistory(int orderInput) {
+        ArrayList<String[]> ordreHistorik = new ArrayList<>();
+        try {
+            FileReader fr = new FileReader(historyFile);
+            BufferedReader br = new BufferedReader(fr);
+            String line = "";
+            String[] tempArray;
+            while ((line = br.readLine()) != null) {
+                tempArray = line.split(",");
+                ordreHistorik.add(tempArray);
+            }
+            br.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
 
     ordreHistorik.add(new String[]{Integer.toString(orderList.getOrders().get(orderInput - 1).getDateOfMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMonth()), Integer.toString(orderList.getOrders().get(orderInput - 1).getHour()), Integer.toString(orderList.getOrders().get(orderInput - 1).getMinute()), orderList.getOrders().get(orderInput - 1).getPizza().getName(), Integer.toString(orderList.getOrders().get(orderInput - 1).getPizza().getPrice()), orderList.getOrders().get(orderInput - 1).getStatus().name()});
     try {
@@ -481,14 +460,13 @@ public class Controller {
     return escapedData;
   }
 
-  public void convertToCSV(ArrayList<String[]> dataLines) throws IOException {
-    File csvOutputFile = new File("src/OrdreHistorik");
-    try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
-      dataLines.stream()
-          .map(this::convertToCSV)
-          .forEach(pw::println);
+    public void convertToCSV(ArrayList<String[]> dataLines) throws IOException {
+        try (PrintWriter pw = new PrintWriter(historyFile)) {
+            dataLines.stream()
+                    .map(this::convertToCSV)
+                    .forEach(pw::println);
+        }
+        //assertTrue(csvOutputFile.exists());
     }
-    //assertTrue(csvOutputFile.exists());
-  }
 
 }
