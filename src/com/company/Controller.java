@@ -68,7 +68,7 @@ public class Controller {
             for (int i = 0; i < orderList.getOrders().size(); i++) {
                 System.out.print(i + 1 + ": " + sortOrderList(orderList).getOrders().get(i).getDateOfMonth() + "/" + sortOrderList(orderList).getOrders().get(i).getMonth() + " kl. " + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getHour()) + ":" + String.format("%02d", sortOrderList(orderList).getOrders().get(i).getMinute()) + " - Pizza #" + sortOrderList(orderList).getOrders().get(i).getPizza().getNumber() + ": " + sortOrderList(orderList).getOrders().get(i).getPizza().getName() + " - Note: " + sortOrderList(orderList).getOrders().get(i).getNote() + " - Status: " + sortOrderList(orderList).getOrders().get(i).getStatus().name());
                 if (orderList.getOrders().get(i).getHasPickupTime()) {
-                    System.out.println(" - Afhentningstidspunkt: " + orderList.getOrders().get(i).getTakeawayHour() + ":" + orderList.getOrders().get(i).getTakeawayMinute());
+                    System.out.println(" - Afhentningstidspunkt: " + sortOrderList(orderList).getOrders().get(i).getTakeawayHour() + ":" + sortOrderList(orderList).getOrders().get(i).getTakeawayMinute());
                 }
             }
         } else {
@@ -264,11 +264,19 @@ public class Controller {
         while (!sorted) {
             sortedNums = 0;
             for (int i = sortedHours.size() - 1; i > 0; i--) {
+              if (!(sortedHours.get(i).getHasPickupTime())) {
                 if (sortedHours.get(i).getHour() < sortedHours.get(i - 1).getHour()) {
-                    Order temp = sortedHours.get(i);
-                    sortedHours.set(i, sortedHours.get(i - 1));
-                    sortedHours.set(i - 1, temp);
+                  Order temp = sortedHours.get(i);
+                  sortedHours.set(i, sortedHours.get(i - 1));
+                  sortedHours.set(i - 1, temp);
                 } else sortedNums++;
+              } else {
+                if (sortedHours.get(i).getTakeawayHour() < sortedHours.get(i - 1).getTakeawayHour()){
+                  Order temp = sortedHours.get(i);
+                  sortedHours.set(i, sortedHours.get(i - 1));
+                  sortedHours.set(i - 1, temp);
+                } else sortedNums++;
+              }
             }
             if (sortedNums == sortedHours.size() - 1) {
                 sorted = true;
@@ -284,11 +292,19 @@ public class Controller {
         while (!sorted) {
             int sortedNums = 0;
             for (int i = sortedMinutes.size() - 1; i > 0; i--) {
+              if (!(sortedMinutes.get(i).getHasPickupTime())) {
                 if (sortedMinutes.get(i).getMinute() < sortedMinutes.get(i - 1).getMinute()) {
-                    Order temp = sortedMinutes.get(i);
-                    sortedMinutes.set(i, sortedMinutes.get(i - 1));
-                    sortedMinutes.set(i - 1, temp);
+                  Order temp = sortedMinutes.get(i);
+                  sortedMinutes.set(i, sortedMinutes.get(i - 1));
+                  sortedMinutes.set(i - 1, temp);
                 } else sortedNums++;
+              } else {
+                if (sortedMinutes.get(i).getTakeawayMinute() < sortedMinutes.get(i - 1).getTakeawayMinute()){
+                  Order temp = sortedMinutes.get(i);
+                  sortedMinutes.set(i, sortedMinutes.get(i - 1));
+                  sortedMinutes.set(i - 1, temp);
+                } else sortedNums++;
+              }
             }
             if (sortedNums == sortedMinutes.size() - 1) {
                 sorted = true;
