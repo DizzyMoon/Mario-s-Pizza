@@ -317,14 +317,9 @@ public class Controller {
             int minuteA = orderA.getHasPickupTime() ? orderA.getTakeawayMinute() : orderA.getMinute();
             int minuteB = orderB.getHasPickupTime() ? orderB.getTakeawayMinute() : orderB.getMinute();
 
-            return (minuteA > minuteB);
+            return minuteA > minuteB;
         } else {
-
-            if (hourA > hourB) {
-                return true;
-            } else {
-                return false;
-            }
+            return hourA > hourB;
         }
     }
 
