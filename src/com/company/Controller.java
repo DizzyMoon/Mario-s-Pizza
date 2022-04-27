@@ -120,8 +120,19 @@ public class Controller {
     private void addOrder() {
         showMenu();
 
+        boolean validPizza = false;
         int pizzaNum = -1;
-        pizzaNum = pickPizza(pizzaNum);
+        while (!validPizza) {
+            pizzaNum = pickPizza(pizzaNum);
+            if (pizzaNum <= 14 && pizzaNum > 0){
+                validPizza = true;
+            } else {
+                System.out.println("Invalid number (item does not exist)");
+            }
+        }
+        if (pizzaNum > 14){
+            System.out.println();
+        }
 
         System.out.print("Skriv note: ");
         String pizzaNote = sc.nextLine();
